@@ -4,9 +4,8 @@
 
 # MultiChannel Blog
 
-#### Tus clips subidos automáticamente.
+#### Todos los videos que te interesan en un solo lugar.
 
 
 
-Este proyecto consiste en un blog que trata de subir los enlaces de tus vídeos de Twitch o YouTube automáticamente a este. Se usa un sistema de verificación OAuth 2.0 para ambas plataformas (principalmente para comprobar si el canal que proporcionas es tuyo).
-#### El blog usaría Python como lenguaje principal, usaría Flask (conjunto de herramientas y reglas que te ayuda a construir aplicaciones web de manera rápida y simple usando el lenguaje Python) y Jinja2 para mezclar los IDs de los videos que un usuario introduce en Python dentro de las etiquetas <iframe> de el HTML.
+Se usa Python con el microframework Flask para el backend y Jinja2 para la interfaz (frontend). Se implementa OAuth 2.0 para la autenticación y consumo de las APIs de YouTube y Twitch. SQLAlchemy gestiona la base de datos (SQLite) para almacenar los tokens de los usuarios.
