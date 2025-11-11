@@ -1,0 +1,2 @@
+REQUERIDO:
+pip install Flask SQLAlchemy requests google-api-python-client
