@@ -1,8 +1,11 @@
-![ (Logotipo de MultiChannel Blog](https://github.com/cporgom/multichannel-blog/blob/main/multichannel-logo.png?raw=true)
+<p align="center">
+  <img src="https://github.com/cporgom/multichannel-blog/blob/main/multichannel-logo.png?raw=true" alt="Logo Multichannel Blog" width="200" />
+</p>
+
 # MultiChannel Blog
 
-#### Tus clips subidos automáticamente.
+#### Todos los videos que te interesan en un solo lugar.
 
 
 
-Este proyecto consiste en un blog que trata de subir los enlaces de tus vídeos de Twitch o YouTube automáticamente a este. Se usa un sistema de verificación OAuth 2.0 para ambas plataformas (principalmente para comprobar si el canal que proporcionas es tuyo).
+Se usa Python con el microframework Flask para el backend y Jinja2 para la interfaz (frontend). Se implementa OAuth 2.0 para la autenticación y consumo de las APIs de YouTube y Twitch. SQLAlchemy gestiona la base de datos (SQLite) para almacenar los tokens de los usuarios.
