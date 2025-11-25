@@ -1,4 +1,15 @@
-venv/
+# Directorios de Python
 __pycache__/
 *.pyc
+
+# Entorno Virtual
+venv/
+
+# Variables de Entorno (Tus claves secretas)
 .env
+conf.env
+
+# Base de Datos (¡NUEVO!)
+*.db
+*.sqlite3
+users.db
