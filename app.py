@@ -43,10 +43,6 @@ def index():
 def login_google():
     redirect_uri = os.getenv("REDIRECT_URI") + "/callback/google"
     
-    # ESTE ES EL PRINT QUE BUSCAMOS:
-    print(f"\n📢 --- DEBUG ---")
-    print(f"📢 MI CÓDIGO ESTÁ ENVIANDO ESTO A GOOGLE: >{redirect_uri}<")
-    print(f"📢 ----------------\n")
 
     google = OAuth2Session(GOOGLE_CLIENT_ID, scope=GOOGLE_SCOPES, redirect_uri=redirect_uri)
     authorization_url, state = google.authorization_url(GOOGLE_AUTH_BASE_URL)
