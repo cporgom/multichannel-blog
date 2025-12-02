@@ -56,7 +56,7 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos:
     source venv/bin/activate
     ```
 
-3.  **Instala las dependencias:**
+3.  **Instala las dependencias (aviso: con start_https.bat se instalan solas):**
     ```bash
     pip install -r requirements.txt
     ```
