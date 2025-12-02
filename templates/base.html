@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MultiChannel Blog{% endblock %}</title>
+    <!-- Enlace al CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Fuente bonita -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/">MultiChannel Blog</a>
+        </div>
+        <div class="nav-links">
+            {% if session.get('google_token') or session.get('twitch_token') %}
+                <a href="/feed">Mi Feed</a>
+                <a href="/logout" class="btn-logout-nav">Salir</a>
+            {% else %}
+                <a href="/">Inicio</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- CONTENIDO -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 MultiChannel Blog - Proyecto Intermodular</p>
+    </footer>
+
+</body>
+</html>

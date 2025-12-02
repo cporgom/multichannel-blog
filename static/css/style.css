@@ -1,0 +1,180 @@
+/* RESET & DARK THEME BASE */
+:root {
+    --bg-dark: #0e0e10; /* Fondo estilo Twitch */
+    --card-bg: #18181b;
+    --text-primary: #efeff1;
+    --text-secondary: #adadb8;
+    --youtube-red: #ff0000;
+    --twitch-purple: #9146ff;
+    --accent-blue: #00d4ff;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #1f1f23;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #303032;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.btn-logout-nav {
+    font-size: 0.9rem;
+    color: #ff4f4f !important;
+    border: 1px solid #ff4f4f;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-left: 15px;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container {
+    flex: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* LOGIN */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.login-box {
+    background-color: var(--card-bg);
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    border: 1px solid #333;
+}
+
+.login-header h1 { margin-bottom: 0.5rem; color: white; }
+.login-header p { color: #aaa; margin-bottom: 2rem; }
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: transform 0.2s, opacity 0.2s;
+    box-sizing: border-box;
+}
+.btn:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-google { background-color: #DB4437; }
+.btn-twitch { background-color: #9146FF; }
+
+/* FEED HEADER */
+.feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
+}
+
+/* GRID DE VIDEOS */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.video-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    border: 1px solid transparent;
+}
+
+.video-card:hover {
+    transform: translateY(-4px);
+    border-color: #444;
+}
+
+.video-thumbnail-container {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background: black;
+}
+
+.video-thumbnail-container iframe {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: none;
+}
+
+.platform-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+}
+.platform-badge.youtube { background: var(--youtube-red); }
+.platform-badge.twitch { background: var(--twitch-purple); }
+
+.video-details { padding: 15px; }
+.video-title {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* FOOTER */
+footer {
+    background-color: #1f1f23;
+    color: #bdc3c7;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+    border-top: 1px solid #303032;
+}

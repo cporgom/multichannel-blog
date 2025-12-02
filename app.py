@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, render_template, redirect, session, request
+from flask import Flask, render_template, redirect, session, request, url_for
 from dotenv import load_dotenv
 from models import db, User
 from requests_oauthlib import OAuth2Session
@@ -34,16 +34,32 @@ TWITCH_AUTH_BASE_URL = "https://id.twitch.tv/oauth2/authorize"
 TWITCH_TOKEN_URL = "https://id.twitch.tv/oauth2/token"
 TWITCH_SCOPES = ["user:read:follows"]
 
+# --- RUTAS PRINCIPALES ---
+
 @app.route('/')
 def index():
+    # Si ya hemos hecho login con alguno, vamos directos al feed
+    if 'google_token' in session or 'twitch_token' in session:
+        return redirect(url_for('feed'))
     return render_template('login.html')
 
-# --- AQUÍ ESTÁ EL CHIVATO ---
+@app.route('/feed')
+def feed():
+    # AQUÍ EN LA FASE 2 METEREMOS LA LÓGICA DE CARGAR VIDEOS REALES
+    # De momento pasamos una lista vacía para ver el diseño
+    feed_items = [] 
+    return render_template('feed.html', feed_items=feed_items)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+# --- GOOGLE ---
+
 @app.route('/login/google')
 def login_google():
     redirect_uri = os.getenv("REDIRECT_URI") + "/callback/google"
-    
-
     google = OAuth2Session(GOOGLE_CLIENT_ID, scope=GOOGLE_SCOPES, redirect_uri=redirect_uri)
     authorization_url, state = google.authorization_url(GOOGLE_AUTH_BASE_URL)
     session['oauth_state'] = state
@@ -70,9 +86,16 @@ def callback_google():
         if token.get('refresh_token'):
             user.google_refresh_token = token.get('refresh_token')
         db.session.commit()
-        return f"✅ ÉXITO GOOGLE: Usuario {google_user_id} guardado."
+        
+        # Guardamos en sesión que estamos logueados
+        session['google_token'] = token
+        
+        # REDIRECCIÓN AL FEED EN LUGAR DE TEXTO
+        return redirect(url_for('feed'))
     except Exception as e:
         return f"❌ Error en Google: {e}"
+
+# --- TWITCH ---
 
 @app.route('/login/twitch')
 def login_twitch():
@@ -103,7 +126,11 @@ def callback_twitch():
         if token.get('refresh_token'):
             user.twitch_refresh_token = token.get('refresh_token')
         db.session.commit()
-        return f"✅ ÉXITO TWITCH: Usuario {twitch_user_id} guardado."
+
+        session['twitch_token'] = token
+        
+        # REDIRECCIÓN AL FEED EN LUGAR DE TEXTO
+        return redirect(url_for('feed'))
     except Exception as e:
         return f"❌ Error en Twitch: {e}"
 

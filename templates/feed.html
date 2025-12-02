@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Feed - MultiChannel{% endblock %}
+
+{% block content %}
+<div class="feed-header">
+    <div class="header-content">
+        <h1>Tu Feed Unificado</h1>
+        <p>Lo último de tus suscripciones en YouTube y Twitch</p>
+    </div>
+</div>
+
+<div class="video-grid">
+    {% for item in feed_items %}
+        <article class="video-card {{ item.platform }}">
+            <div class="video-thumbnail-container">
+                {% if item.platform == 'youtube' %}
+                    <iframe src="https://www.youtube.com/embed/{{ item.id }}" allowfullscreen></iframe>
+                {% elif item.platform == 'twitch' %}
+                    <iframe src="https://clips.twitch.tv/embed?clip={{ item.id }}&parent=127.0.0.1" allowfullscreen></iframe>
+                {% endif %}
+                <div class="platform-badge {{ item.platform }}">
+                    {{ item.platform }}
+                </div>
+            </div>
+            
+            <div class="video-details">
+                <h3 class="video-title" title="{{ item.title }}">{{ item.title }}</h3>
+                <div class="video-meta">
+                    <span class="channel-name">{{ item.channel }}</span>
+                    <span class="upload-date">{{ item.published_at }}</span>
+                </div>
+            </div>
+        </article>
+    {% else %}
+        <!-- ESTADO VACÍO -->
+        <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+            <h2>¡Vaya, esto está vacío!</h2>
+            <p>Parece que no hemos podido cargar videos de prueba.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
