@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}MultiChannel Blog{% endblock %}</title>
-    <!-- Enlace al CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- Fuente bonita -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SCRIPT DE TEMA (En el head para evitar parpadeos) -->
+    <script>
+        // Comprobar preferencia guardada o del sistema al cargar
+        const localTheme = localStorage.getItem('theme');
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const theme = localTheme || systemTheme;
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
 </head>
 <body>
 
@@ -16,25 +23,82 @@
         <div class="logo">
             <a href="/">MultiChannel Blog</a>
         </div>
-        <div class="nav-links">
-            {% if session.get('google_token') or session.get('twitch_token') %}
-                <a href="/feed">Mi Feed</a>
-                <a href="/logout" class="btn-logout-nav">Salir</a>
-            {% else %}
-                <a href="/">Inicio</a>
-            {% endif %}
+        
+        <div style="display: flex; align-items: center;">
+            <div class="nav-links">
+                {% if session.get('google_token') or session.get('twitch_token') %}
+                    <a href="/feed">Mi Feed</a>
+                    <a href="/logout" class="btn-logout-nav">Salir</a>
+                {% else %}
+                    <a href="/">Inicio</a>
+                {% endif %}
+            </div>
+
+            <!-- MENÚ DE AJUSTES -->
+            <div class="settings-menu">
+                <button onclick="toggleSettings()" class="settings-btn" title="Ajustes">
+                    <!-- Icono Engranaje SVG -->
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </button>
+                <div id="settingsDropdown" class="dropdown-content">
+                    <button onclick="setTheme('light')">Tema Claro</button>
+                    <button onclick="setTheme('dark')">Tema Oscuro</button>
+                    <button onclick="setTheme('system')">Sistema</button>
+                </div>
+            </div>
         </div>
     </nav>
 
     <!-- CONTENIDO -->
     <main class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for message in messages %}
+                    <li class="flash-msg">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
         {% block content %}{% endblock %}
     </main>
 
-    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2025 MultiChannel Blog - Proyecto Intermodular</p>
+        <p>&copy; 2025 MultiChannel Blog - Cristian, Gonzalo</p>
     </footer>
 
+    <!-- LÓGICA DE JAVASCRIPT -->
+    <script>
+        function toggleSettings() {
+            document.getElementById("settingsDropdown").classList.toggle("show");
+        }
+
+        // Cerrar menú si haces click fuera
+        window.onclick = function(event) {
+            if (!event.target.matches('.settings-btn') && !event.target.closest('.settings-btn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function setTheme(theme) {
+            let newTheme = theme;
+            
+            if (theme === 'system') {
+                newTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                localStorage.removeItem('theme'); // Borramos preferencia para volver al sistema
+            } else {
+                localStorage.setItem('theme', theme); // Guardamos preferencia
+            }
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+        }
+    </script>
 </body>
 </html>

@@ -1,32 +1,53 @@
-/* RESET & DARK THEME BASE */
+/* --- VARIABLES DE TEMA --- */
 :root {
-    --bg-dark: #0e0e10; /* Fondo estilo Twitch */
-    --card-bg: #18181b;
+    /* Por defecto: TEMA OSCURO (Twitch Style) */
+    --bg-main: #0e0e10;
+    --bg-card: #18181b;
+    --bg-nav: #1f1f23;
     --text-primary: #efeff1;
     --text-secondary: #adadb8;
+    --border-color: #303032;
+    --accent-color: #00d4ff;
+    --hover-bg: #3a3a40;
+    
+    /* Colores de Marca */
     --youtube-red: #ff0000;
     --twitch-purple: #9146ff;
-    --accent-blue: #00d4ff;
 }
 
+/* TEMA CLARO (Sobrescribimos las variables) */
+[data-theme="light"] {
+    --bg-main: #f7f7f8;
+    --bg-card: #ffffff;
+    --bg-nav: #ffffff;
+    --text-primary: #0e0e10;
+    --text-secondary: #53535f;
+    --border-color: #e5e5e5;
+    --accent-color: #007bff;
+    --hover-bg: #efeff1;
+}
+
+/* --- ESTILOS GENERALES --- */
 body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
     margin: 0;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-main);
     color: var(--text-primary);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 /* NAVBAR */
 .navbar {
-    background-color: #1f1f23;
-    padding: 1rem 2rem;
-    border-bottom: 1px solid #303032;
+    background-color: var(--bg-nav);
+    padding: 0.8rem 2rem;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background-color 0.3s;
 }
 
 .navbar a {
@@ -36,16 +57,61 @@ body {
     font-size: 1.2rem;
 }
 
-.btn-logout-nav {
-    font-size: 0.9rem;
-    color: #ff4f4f !important;
-    border: 1px solid #ff4f4f;
-    padding: 5px 10px;
-    border-radius: 4px;
+/* MENÚ DE AJUSTES (DROPDOWN) */
+.settings-menu {
+    position: relative;
+    display: inline-block;
     margin-left: 15px;
 }
 
-/* CONTENEDOR PRINCIPAL */
+.settings-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.settings-btn:hover {
+    background-color: var(--hover-bg);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--bg-card);
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.dropdown-content button {
+    color: var(--text-primary);
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--hover-bg);
+}
+
+/* Clase para mostrar el menú con JS */
+.show { display: block; }
+
+/* RESTO DE COMPONENTES (Actualizados con variables) */
 .container {
     flex: 1;
     max-width: 1400px;
@@ -55,28 +121,39 @@ body {
     box-sizing: border-box;
 }
 
-/* LOGIN */
-.login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 60vh;
+.login-box, .video-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
 }
 
-.login-box {
-    background-color: var(--card-bg);
-    padding: 3rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    text-align: center;
-    max-width: 450px;
-    width: 100%;
-    border: 1px solid #333;
+.video-card:hover {
+    border-color: #666;
 }
 
-.login-header h1 { margin-bottom: 0.5rem; color: white; }
-.login-header p { color: #aaa; margin-bottom: 2rem; }
+.filter-btn {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
 
+.filter-btn:hover { background: var(--hover-bg); }
+.filter-btn.active { background: var(--accent-color); color: white; border-color: var(--accent-color); }
+
+footer {
+    background-color: var(--bg-nav);
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-logout-nav {
+    font-size: 0.9rem;
+    color: #ff4f4f !important;
+    border: 1px solid #ff4f4f;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* BOTONES DE LOGIN */
 .btn {
     display: flex;
     align-items: center;
@@ -91,90 +168,18 @@ body {
     font-size: 1.1rem;
     transition: transform 0.2s, opacity 0.2s;
     box-sizing: border-box;
-}
-.btn:hover { transform: translateY(-2px); opacity: 0.9; }
-.btn-google { background-color: #DB4437; }
-.btn-twitch { background-color: #9146FF; }
-
-/* FEED HEADER */
-.feed-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #333;
-    padding-bottom: 20px;
+    cursor: pointer;
 }
 
-/* GRID DE VIDEOS */
-.video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
 }
 
-.video-card {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.2s;
-    border: 1px solid transparent;
+.btn-google {
+    background-color: #DB4437; /* Rojo Google Oficial */
 }
 
-.video-card:hover {
-    transform: translateY(-4px);
-    border-color: #444;
-}
-
-.video-thumbnail-container {
-    position: relative;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    background: black;
-}
-
-.video-thumbnail-container iframe {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    border: none;
-}
-
-.platform-badge {
-    position: absolute;
-    top: 10px; right: 10px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    color: white;
-    text-transform: uppercase;
-}
-.platform-badge.youtube { background: var(--youtube-red); }
-.platform-badge.twitch { background: var(--twitch-purple); }
-
-.video-details { padding: 15px; }
-.video-title {
-    margin: 0 0 10px 0;
-    font-size: 1rem;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.video-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
-
-/* FOOTER */
-footer {
-    background-color: #1f1f23;
-    color: #bdc3c7;
-    text-align: center;
-    padding: 1rem;
-    margin-top: auto;
-    border-top: 1px solid #303032;
+.btn-twitch {
+    background-color: #9146FF; /* Morado Twitch Oficial */
 }
